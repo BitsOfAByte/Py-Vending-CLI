@@ -12,7 +12,7 @@ def create_user(username, password):
         INSERT INTO users (username, password_hash)
         VALUES ('{username}', '{password}');
     """
-    return handler.execute_query(query)
+    return handler.execute_query(query, 'users')
 
 
 def get_username(username):
@@ -28,7 +28,7 @@ def get_username(username):
         SELECT * from users
         WHERE username = '{username}';
     """
-    return handler.execute_query(query)
+    return handler.execute_query(query, 'users')
 
 
 def login_user(username, password):
@@ -42,7 +42,7 @@ def login_user(username, password):
         SELECT * FROM users
         WHERE username = '{username}' AND password_hash = '{password}';
     """
-    return handler.execute_query(query)
+    return handler.execute_query(query, 'users')
 
 
 def get_user_balance(username):
@@ -55,7 +55,7 @@ def get_user_balance(username):
         SELECT balance FROM users
         WHERE username = '{username}';
     """
-    return handler.execute_query(query)
+    return handler.execute_query(query, 'users')
 
 
 def modify_user_balance(username, new_balance):
@@ -71,7 +71,7 @@ def modify_user_balance(username, new_balance):
         SET balance = '{new_balance}'
         WHERE username = '{username}';
     """
-    return handler.execute_query(query)
+    return handler.execute_query(query, 'users')
 
 
 def delete_user(username):
@@ -84,4 +84,37 @@ def delete_user(username):
         DELETE FROM users
         WHERE username = '{username}';
     """
-    return handler.execute_query(query)
+    return handler.execute_query(query, 'users')
+
+def get_all_products():
+    """
+    Gets all products
+    """
+    query = f"""
+        SELECT * FROM products;
+    """
+    return handler.execute_query(query, 'products')
+
+def modify_stock(product_id, new_stock):
+    """
+    Modifies the stock of a product
+    Arguments:
+        product_id <str>: The id of the product
+        new_stock <int>: The new stock of the product
+    """
+    query = f"""
+        UPDATE products
+        SET stock = '{new_stock}'
+        WHERE product_code = '{product_id}';
+    """
+    return handler.execute_query(query, 'products')
+
+def restock_all_products():
+    """
+    Restocks all products
+    """
+    query = f"""
+        UPDATE products
+        SET stock = '{20}';
+    """
+    return handler.execute_query(query, 'products')

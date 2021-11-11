@@ -1,8 +1,5 @@
 import database.queries as queries
 
-vending_options = [["A1", "Crisps", 1.25], [
-    "A2", "Chocolate", 1.50], ["A3", "Water", 0.65]]
-
 NEWLINES = "\n" * 35
 
 
@@ -12,21 +9,24 @@ def user_balance(uid):
     Arguments:
         uid: The user's ID.
     """
-    return float(queries.get_user_balance(uid)[0][0])
+    return round(float(queries.get_user_balance(uid)[0][0]), 2)
 
 
 def show_vending_options(uid):
     """
     This function shows the vending options in a table
     """
+    VENDING_OPTIONS = queries.get_all_products()
     available_items = ''
-    for i in vending_options:
+    for i in VENDING_OPTIONS:
         if(i[2] >= user_balance(uid)):
             pass
+        elif i[3] == 0:
+            available_items += f"{i[0]}: {i[1]} - Out of Stock\n"
         else:
-            available_items = available_items + f"{i[0]}  |   {i[1]} costing £{i[2]}\n"
+            available_items = available_items + f"{i[0]}  |   {i[1]} costing £{i[2]} - In stock ({i[3]})\n"
     if available_items:
-        print(f"""{NEWLINES}
+        print(f"""
 --------------------------------
         Vending Options
 --------------------------------
@@ -37,14 +37,18 @@ def show_vending_options(uid):
         show_menu(uid)
 
 
-def search_for_choice(choice):
+def search_for_choice(uid, choice):
     """
     Searches for the choice in the vending options.
     Arguments:
         choice: The choice to search for.
     """
-    for i in vending_options:
+    VENDING_OPTIONS = queries.get_all_products()
+    for i in VENDING_OPTIONS:
         if i[0].lower() == choice.lower():
+            if i[3] == 0:
+                print(f"{NEWLINES}Sorry, {i[1]}' is out of stock.")
+                begin_vending_sequence(uid)
             return i
 
 
@@ -57,7 +61,7 @@ def handle_choice(uid):
     if choice.lower() == "back":
         show_menu(uid)
     else:
-        return search_for_choice(choice)
+        return search_for_choice(uid, choice)
 
 
 def add_funds(uid):
@@ -96,6 +100,7 @@ def begin_vending_sequence(uid):
             if user_balance(uid) >= choice[2]:
                 # If they do, we need to update the database
                 queries.modify_user_balance(uid, user_balance(uid) - choice[2])
+                queries.modify_stock(choice[0], choice[3] - 1)
                 print(
                     f"{NEWLINES}You have purchased {choice[1]} for £{choice[2]}. Your new balance is £{user_balance(uid)}")
                 show_menu(uid)
@@ -114,6 +119,10 @@ def menu_choices(uid):
         elif option == 2:
             add_funds(uid)
         elif option == 3:
+            print(f"{NEWLINES} Restocked all products!")
+            queries.restock_all_products()
+            show_menu(uid)
+        elif option == 4:
             print(f"Thank you for using the vending machine, {uid}.")
             exit()
     except ValueError:
@@ -136,7 +145,8 @@ Logged in as: {uid} | Balance: £{user_balance(uid)}
 
 [1] - Make a purchase
 [2] - Input money
-[3] - Exit
+[3] - Restock All Items
+[4] - Exit
 """)
 
     menu_choices(uid)
