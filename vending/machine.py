@@ -123,6 +123,14 @@ def menu_choices(uid):
             queries.restock_all_products()
             show_menu(uid)
         elif option == 4:
+            confirm = input("Are you sure you'd like to do that? (Yes/no) > ")
+            if confirm == 'yes'.lower():
+                queries.delete_user(uid)
+                print("Your account has been deleted, goodbye.")
+                exit()
+            else:
+                show_menu(uid)
+        elif option == 5:
             print(f"Thank you for using the vending machine, {uid}.")
             exit()
     except ValueError:
@@ -146,7 +154,8 @@ Logged in as: {uid} | Balance: £{user_balance(uid)}
 [1] - Make a purchase
 [2] - Input money
 [3] - Restock All Items
-[4] - Exit
+[4] - Delete Account
+[5] - Exit
 """)
 
     menu_choices(uid)
