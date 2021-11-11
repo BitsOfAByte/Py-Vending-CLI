@@ -1,6 +1,7 @@
 import sqlite3
 import os
 
+
 def create_file_directory(directory):
     """
     Creates a directory
@@ -12,6 +13,7 @@ def create_file_directory(directory):
     except FileExistsError:
         pass
 
+
 def create_text_file(file_name):
     """
     Creates a text file
@@ -20,6 +22,7 @@ def create_text_file(file_name):
     """
     with open(file_name, 'w') as file:
         file.close()
+
 
 def create_user_table():
     """
@@ -38,7 +41,8 @@ def create_user_table():
     cursor.execute(query)
     db.commit()
     db.close()
-        
+
+
 def db_connect():
     """
     Connects to the database
@@ -51,6 +55,7 @@ def db_connect():
         db = sqlite3.connect('data/users.db')
 
     return db
+
 
 def execute_query(query):
     """

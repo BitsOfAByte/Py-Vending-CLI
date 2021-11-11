@@ -1,6 +1,7 @@
 import database.queries as queries
 
-vending_options = [["A1", "Crisps", 1.25], ["A2", "Chocolate", 1.50], ["A3", "Water", 0.65]]
+vending_options = [["A1", "Crisps", 1.25], [
+    "A2", "Chocolate", 1.50], ["A3", "Water", 0.65]]
 
 NEWLINES = "\n" * 35
 
@@ -13,18 +14,27 @@ def user_balance(uid):
     """
     return float(queries.get_user_balance(uid)[0][0])
 
+
 def show_vending_options(uid):
     """
     This function shows the vending options in a table
     """
-    print("\nVending Options")
-    print("Code | Product | Price")
+    available_items = ''
     for i in vending_options:
-        if(i[2] <= user_balance(uid)):
-            print(f"{i[0]}  |   {i[1]}  |   {i[2]}  | ✅")
+        if(i[2] >= user_balance(uid)):
+            pass
         else:
-            print(f"{i[0]}  |   {i[1]}  |   {i[2]}  | ❎")
-
+            available_items = available_items + f"{i[0]}  |   {i[1]} costing £{i[2]}\n"
+    if available_items:
+        print(f"""{NEWLINES}
+--------------------------------
+        Vending Options
+--------------------------------
+""")
+        print(available_items)
+    else:
+        print(f"{NEWLINES}Attention: You cannot afford anything! Add some money and come back.")
+        show_menu(uid)
 
 
 def search_for_choice(choice):
@@ -37,6 +47,7 @@ def search_for_choice(choice):
         if i[0].lower() == choice.lower():
             return i
 
+
 def handle_choice(uid):
     """
     This function handles the choice of the user.
@@ -48,19 +59,22 @@ def handle_choice(uid):
     else:
         return search_for_choice(choice)
 
+
 def add_funds(uid):
     try:
         funds_to_add = float(input("How much money do you want to input? > "))
         if funds_to_add < 0:
-            print("You cannot input a negative amount of money")
+            print("Sorry! You cannot input a negative amount of money")
             add_funds(uid)
         else:
             queries.modify_user_balance(uid, user_balance(uid) + funds_to_add)
-            print(f"{NEWLINES}You have added £{funds_to_add} to your balance. Your new balance is £{user_balance(uid)}")
+            print(
+                f"{NEWLINES}Success: You have added £{funds_to_add} to your balance. Your new balance is £{user_balance(uid)}")
             show_menu(uid)
     except ValueError:
-        print("Invalid amount! Try again")
+        print("That doesn't look valid! Try again.")
         add_funds(uid)
+
 
 def begin_vending_sequence(uid):
     """
@@ -69,10 +83,11 @@ def begin_vending_sequence(uid):
         uid: The user's ID.
     """
     # First off, print out the items that are available
-    # Honestly, if I wasn't to tired of making this project, I'd make all the items go into a database and then just print them out here.
+    # Honestly, if I wasn't to tired of making this project, I'd make all the
+    # items go into a database and then just print them out here.
     show_vending_options(uid)
     # Next off, make the user pick from the options
-    chosen = False 
+    chosen = False
     while not chosen:
         choice = handle_choice(uid)
         if choice:
@@ -81,13 +96,15 @@ def begin_vending_sequence(uid):
             if user_balance(uid) >= choice[2]:
                 # If they do, we need to update the database
                 queries.modify_user_balance(uid, user_balance(uid) - choice[2])
-                print(f"{NEWLINES}You have purchased {choice[1]} for £{choice[2]}. Your new balance is £{user_balance(uid)}")
+                print(
+                    f"{NEWLINES}You have purchased {choice[1]} for £{choice[2]}. Your new balance is £{user_balance(uid)}")
                 show_menu(uid)
             else:
                 print(f"{NEWLINES}You don't have enough money to buy that item")
                 begin_vending_sequence(uid)
         else:
             print("Invalid choice")
+
 
 def menu_choices(uid):
     try:
@@ -97,10 +114,11 @@ def menu_choices(uid):
         elif option == 2:
             add_funds(uid)
         elif option == 3:
+            print(f"Thank you for using the vending machine, {uid}.")
             exit()
     except ValueError:
         print("Invald Choice! Try again\n")
-        menu_choices()
+        menu_choices(uid)
 
 
 def show_menu(uid):

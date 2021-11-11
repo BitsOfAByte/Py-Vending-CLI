@@ -1,7 +1,8 @@
-from wrappers.authentication import login_user, register_user 
+from wrappers.authentication import login_user, register_user
 from vending.machine import show_menu
 
 NEWLINES = "\n" * 35
+
 
 def auth_options():
     """
@@ -11,7 +12,7 @@ def auth_options():
         choice = int(input('Choice > '))
         if choice == 1:
             user_login = login_user()
-            if user_login != False:
+            if user_login:
                 show_menu(user_login)
             else:
                 print("You failed to authenticate")
@@ -24,12 +25,13 @@ def auth_options():
     except ValueError:
         auth_options()
 
+
 def auth_menu():
     """
     Show a CLI menu to authenticate users
     """
 
-    print(f"""{NEWLINES}
+    print(f"""
 ---------------------------------
        Authentication Menu
 ---------------------------------

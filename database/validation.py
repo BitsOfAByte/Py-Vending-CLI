@@ -1,5 +1,6 @@
 import database.queries as database
 
+
 def validate_username(username):
     if database.get_username(username):
         return 'Username taken.'

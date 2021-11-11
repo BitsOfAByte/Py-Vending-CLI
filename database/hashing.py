@@ -1,4 +1,5 @@
-import hashlib 
+import hashlib
+
 
 def hash_sha3_512(password):
     """

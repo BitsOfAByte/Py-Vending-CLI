@@ -1,4 +1,5 @@
-import database.handler as handler 
+import database.handler as handler
+
 
 def create_user(username, password):
     """
@@ -12,6 +13,7 @@ def create_user(username, password):
         VALUES ('{username}', '{password}');
     """
     return handler.execute_query(query)
+
 
 def get_username(username):
     """
@@ -28,6 +30,7 @@ def get_username(username):
     """
     return handler.execute_query(query)
 
+
 def login_user(username, password):
     """
     Logs in a user
@@ -41,6 +44,7 @@ def login_user(username, password):
     """
     return handler.execute_query(query)
 
+
 def get_user_balance(username):
     """
     Gets the balance of a user
@@ -52,6 +56,7 @@ def get_user_balance(username):
         WHERE username = '{username}';
     """
     return handler.execute_query(query)
+
 
 def modify_user_balance(username, new_balance):
     """
@@ -67,6 +72,7 @@ def modify_user_balance(username, new_balance):
         WHERE username = '{username}';
     """
     return handler.execute_query(query)
+
 
 def delete_user(username):
     """
