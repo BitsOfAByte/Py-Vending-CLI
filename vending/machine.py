@@ -89,8 +89,6 @@ def begin_vending_sequence(uid):
         uid: The user's ID.
     """
     # First off, print out the items that are available
-    # Honestly, if I wasn't to tired of making this project, I'd make all the
-    # items go into a database and then just print them out here.
     show_vending_options(uid)
     # Next off, make the user pick from the options
     chosen = False
