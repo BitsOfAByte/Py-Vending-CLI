@@ -44,8 +44,9 @@ def register_user():
     registered = False
     while not registered:
         username = str(input("Enter a username > ")).lower()
-        password = passinput.getpass("Enter a unique password > ")
-        if validator.validate_username(username) == True:
+        password = hasher.hash_sha3_512(
+            passinput.getpass("Enter a unique password > "))
+        if validator.validate_username(username):
             registered = True
             db.create_user(username, password)
             print(
