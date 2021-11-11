@@ -1,0 +1,115 @@
+vending_options = [["A1", "Crisps", 1.25], ["A2", "Chocolate", 1.50], ["A3", "Water", 0.65]]
+
+def vending_menu():
+    print(
+        """
+        ===========================
+        |    Vending Machine     |
+        ===========================
+
+        [1] - Select Product
+        [2] - Insert Money
+        [3] - Check Balance
+        [4] - Quit
+        """
+    )
+    handle_menu_choices()
+
+def handle_menu_choices():
+    """
+    This function handles the menu choices.
+    """
+    try:
+        choice = int(input('Choice > '))
+        if choice == 1:
+            vending_flow()
+        elif choice == 2:
+            print("Insert Money")
+        elif choice == 3:
+            print("Check Balance")
+        elif choice == 4:
+            print("Thank you for using the vending machine")
+            exit()
+    except ValueError:
+        handle_menu_choices()
+
+def show_vending_options():
+    """
+    This function shows the vending options in a table
+    """
+    print("\nVending Options")
+    print("Code | Product | Price")
+    for i in vending_options:
+        print(f"{i[0]} | {i[1]} | {i[2]}")
+
+def search_for_choice(choice):
+    for i in vending_options:
+        if i[0].lower() == choice.lower():
+            return i
+
+def handle_money(amount, item_cost):
+    """
+    This function handles the money.
+    Arguments:
+        amount: The amount of money inserted by the user.
+        item_cost: The cost of the item.
+    Returns:
+        The amount of change to be given to the user.
+    """
+    if amount < item_cost:
+        return False
+    elif amount == item_cost:
+        return 0
+    else:
+        return round(amount - item_cost, 4)
+
+def handle_choice():
+    """
+    This function handles the choice of the user.
+    """
+    choice = input("Enter your choice > ")
+    if choice.lower() == "quit":
+        print("Thank you for using the vending machine")
+        exit()
+    else:
+        return search_for_choice(choice)
+
+def input_currency(item):
+    """
+    This function handles the input of the currency.
+    """
+    currency = float(input("Enter the amount of money > "))
+    try:
+        return handle_money(currency, item[2])
+    except ValueError:
+        print("Invalid input")
+        return input_currency()
+
+def handle_dispensing(item):
+    """
+    This function handles the dispensing of the item.
+    Arguments:
+        item: The item to be dispensed.
+    """
+    print(f"Dispensing {item[1]}")
+
+def vending_flow():
+    show_vending_options()
+    item = handle_choice()
+    print(item)
+    if item:
+        item_cost = item[2]
+        amount = input_currency(item)
+        if amount:
+            change = handle_money(amount, item_cost)
+            if change:
+                handle_dispensing(item)
+                print(f"Change: {change}")
+            else:
+                print("Insufficient funds")
+        else:
+            print("Invalid input")
+    else:
+        print("Invalid input")
+
+vending_menu()
