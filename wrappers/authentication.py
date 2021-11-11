@@ -49,6 +49,7 @@ def register_user():
         if validator.validate_username(username):
             registered = True
             db.create_user(username, password)
-            print(f"{NEWLINES}Success: Account created, your account name is {username}.")
+            print(
+                f"{NEWLINES}Success: Account created, your account name is {username}.")
         else:
             print(validator.validate_username(username))

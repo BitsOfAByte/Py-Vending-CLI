@@ -86,6 +86,7 @@ def delete_user(username):
     """
     return handler.execute_query(query, 'users')
 
+
 def get_all_products():
     """
     Gets all products
@@ -94,6 +95,7 @@ def get_all_products():
         SELECT * FROM products;
     """
     return handler.execute_query(query, 'products')
+
 
 def modify_stock(product_id, new_stock):
     """
@@ -108,6 +110,7 @@ def modify_stock(product_id, new_stock):
         WHERE product_code = '{product_id}';
     """
     return handler.execute_query(query, 'products')
+
 
 def restock_all_products():
     """

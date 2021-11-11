@@ -24,7 +24,8 @@ def show_vending_options(uid):
         elif i[3] == 0:
             available_items += f"{i[0]}: {i[1]} - Out of Stock\n"
         else:
-            available_items = available_items + f"{i[0]}  |   {i[1]} costing £{i[2]} - In stock ({i[3]})\n"
+            available_items = available_items + \
+                f"{i[0]}  |   {i[1]} costing £{i[2]} - In stock ({i[3]})\n"
     if available_items:
         print(f"""
 --------------------------------
@@ -33,7 +34,8 @@ def show_vending_options(uid):
 """)
         print(available_items)
     else:
-        print(f"{NEWLINES}Attention: You cannot afford anything! Add some money and come back.")
+        print(
+            f"{NEWLINES}Attention: You cannot afford anything! Add some money and come back.")
         show_menu(uid)
 
 

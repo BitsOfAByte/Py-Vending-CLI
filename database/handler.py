@@ -43,6 +43,7 @@ def create_user_table():
     users_db.commit()
     users_db.close()
 
+
 def create_products_table():
     """
     Creates the user table
@@ -71,7 +72,7 @@ def create_products_table():
         query = f"""
             INSERT INTO products (product_code, product_name, product_price, stock)
             VALUES
-                ('A1', 'Cola', 1.40, 20), 
+                ('A1', 'Cola', 1.40, 20),
                 ('A2', 'Orange', 1.20, 20),
                 ('A3', 'Lemonade', 1.15, 20),
                 ('A4', 'Milkshake', 2.50, 20),
@@ -87,6 +88,7 @@ def create_products_table():
         products_db.commit()
 
     products_db.close()
+
 
 def db_connect():
     """
@@ -123,7 +125,7 @@ def execute_query(query, db):
     if db != 'users' and db != 'products':
         raise ValueError('Invalid database')
     # Otherwise, set the cursor to the right database and execute the query.
-    elif db == 'users': 
+    elif db == 'users':
         cursor = users_db.cursor()
         db = users_db
     elif db == 'products':
